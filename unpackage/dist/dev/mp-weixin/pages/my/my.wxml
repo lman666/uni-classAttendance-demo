@@ -1,0 +1,1 @@
+<view class="my-userinfo"><view class="top-box"><image class="avatar" src="{{userInfo.avatar}}"></image><view class="nickname">{{userInfo.nickName}}</view></view><view class="info"><block wx:for="{{infoList}}" wx:for-item="item" wx:for-index="i" wx:key="i"><block><my-info vue-id="{{'704e9d00-1-'+i}}" item="{{item}}" bind:__l="__l"></my-info></block></block></view></view>
