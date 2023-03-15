@@ -43,7 +43,16 @@
       }
 
     }
-  ],
+      ,{
+            "path" : "pages/lookUpPunchRes/lookUpPunchRes",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

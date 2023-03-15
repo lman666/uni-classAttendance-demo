@@ -36,11 +36,14 @@
           </uni-card>
         </view>
       </view>
-      <view class="readPunch">
+      <view class="readPunch" v-if="showPunResCom">
         <view class="pickBody">
-          <uni-datetime-picker type="date" :clear-icon="false" v-model="currentDate" :end="currentDate" @change="confirmDate" />
+          <uni-datetime-picker type="date" :clear-icon="false" v-model="selDate" :end="currentDate"
+            @change="confirmDate" />
         </view>
-        <circleProgress></circleProgress>
+        <view class="circleProgress" @click="lookUpPunchRes">
+          <circleProgress :alreadyPunchCount="alreadyPunchCount" :totalStaffCount="totalStaffCount"></circleProgress>
+        </view>
       </view>
       <view class="editTime">
         <!-- 编辑打卡时间的弹窗 -->
@@ -244,8 +247,12 @@
         isUploadMethod: false, // 是否上传打卡方式
         isUploadTime: false, // 是否上传打卡时间
         isUploadStaff: false, // 是否上传打卡人员
-        currentDate: '',   // 当天日期
-        selDate: '',    // 选中的日期
+        currentDate: '', // 当天日期
+        selDate: '', // 选中的日期
+        showPunResCom: false, // 是否显示打卡结果组件
+        punchResList: [],   // 打卡结果
+        alreadyPunchCount: 0,   // 某天已打卡人数
+        totalStaffCount: 0,    // 需打卡总人数
         options: [{
           text: '删除',
           style: {
@@ -273,12 +280,98 @@
         let fullYear = date.getFullYear()
         let month = date.getMonth() + 1
         let day = date.getDate()
-        this.currentDate = fullYear + '.' + month + '.' + day
+        this.currentDate = fullYear + '-' + month + '-' + day
         this.selDate = this.currentDate
       },
       // 选择日期确认
       confirmDate(e) {
         this.selDate = e
+        this.calculatePunchResult()
+      },
+      // 跳转页面查看打卡结果
+      lookUpPunchRes() {
+        if (JSON.stringify(this.punchResList) !== '[]') {
+          uni.navigateTo({
+            url: '/pages/lookUpPunchRes/lookUpPunchRes?punchResList=' + encodeURIComponent(JSON.stringify(this.punchResList))
+          })
+        }
+      },
+      // 是否显示打卡结果组件
+      isShowPunchResComponent() {
+        if (!this.isEdit && this.isUploadMethod && this.isUploadStaff && this.isUploadTime) {
+          this.showPunResCom = true
+          this.calculatePunchResult()
+        } else {
+          this.showPunResCom = false
+        }
+      },
+      // 计算打卡结果
+      calculatePunchResult() {
+        this.punchResList = []
+        this.alreadyPunchCount = 0
+        this.totalStaffCount = 0
+        let date = new Date(this.selDate)
+        let currentWeek = date.getDay()
+        let isInClockDate = false
+        let weekMap = new Map([
+          [0, '日'],
+          [1, '一'],
+          [2, '二'],
+          [3, '三'],
+          [4, '四'],
+          [5, '五'],
+          [6, '六']
+        ])
+        for (let item of this.clockList) {
+          if (weekMap.get(currentWeek) === item.date) {
+            // 所选择的日期在需打卡时间列表里面
+            isInClockDate = true
+            break
+          }
+        }
+        if (isInClockDate) {
+          let res = this.calculateAlreadyPunchStaffCount()
+          if (JSON.stringify(res) !== '{}') {
+            // 所选择的日期在已打卡列表中
+            this.alreadyPunchCount = res.punchList.length
+            this.getPunchList(this.selectedCourse.staffList, res.punchList)
+          } else {
+            this.getPunchList(this.selectedCourse.staffList)
+          }
+          this.totalStaffCount = this.selectedCourse.staffList.length
+        }
+        console.log(this.alreadyPunchCount, this.totalStaffCount)
+      },
+      // 获取打卡结果
+      getPunchList(staffList, punchList = []) {
+        this.punchResList = staffList
+        for (let item of this.punchResList) {
+          item.isPunch = false
+        }
+        for (let item1 of punchList) {
+          for (let item2 of this.punchResList) {
+            if (item1.code === item2.code) {
+              item2.isPunch = true
+            }
+          }
+        }
+        console.log('this.punchResList', this.punchResList)
+      },
+      // 返回某天已打卡信息
+      calculateAlreadyPunchStaffCount() {
+        let count = 0
+        let year = this.selDate.split('-')[0]
+        let month = +this.selDate.split('-')[1]
+        let day = +this.selDate.split('-')[2]
+        let dateStr = year + '.' + month + '.' + day
+        let punchInfo = {}  // 某天的打卡信息
+        for (let item of this.selectedCourse.alreadyPunchStaffList) {
+          if (dateStr === item.date) {
+            punchInfo = item
+            break
+          }
+        }
+        return punchInfo
       },
       // 让缺省图片铺满屏幕
       autoImage(e) {
@@ -369,6 +462,7 @@
           if (this.selectedCourse.method !== '') {
             this.isUploadMethod = true
           }
+          this.isShowPunchResComponent()
         }
       },
       // 根据位置信息打开地图
@@ -843,15 +937,20 @@
       .readPunch {
         background-color: #fff;
         margin: 0 20rpx;
+
         .pickBody {
           background-color: #fff;
           padding: 10px;
-          
+
           /deep/ .uni-date-editor {
             .uni-date__x-input {
               padding-left: 15rpx;
             }
           }
+        }
+        
+        .circleProgress {
+          margin-top: 60rpx;
         }
       }
     }

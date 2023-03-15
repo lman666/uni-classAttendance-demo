@@ -5,7 +5,8 @@
     "pages/index/index",
     "pages/lookUpStaff/lookUpStaff",
     "pages/my/my",
-    "pages/selRecurDate/selRecurDate"
+    "pages/selRecurDate/selRecurDate",
+    "pages/lookUpPunchRes/lookUpPunchRes"
   ],
   "subPackages": [],
   "window": {

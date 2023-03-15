@@ -16,6 +16,9 @@
   import { mapState } from 'vuex'
   import myInfo from '@/components/myInfo/myInfo.vue'
   export default {
+    components: {
+      myInfo
+    },
     data() {
       return {
         infoList: [
