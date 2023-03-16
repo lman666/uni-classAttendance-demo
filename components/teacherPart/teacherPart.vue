@@ -250,7 +250,7 @@
         currentDate: '', // 当天日期
         selDate: '', // 选中的日期
         showPunResCom: false, // 是否显示打卡结果组件
-        punchResList: [],   // 打卡结果
+        punchResInfo: {},   // 打卡结果
         alreadyPunchCount: 0,   // 某天已打卡人数
         totalStaffCount: 0,    // 需打卡总人数
         options: [{
@@ -290,9 +290,9 @@
       },
       // 跳转页面查看打卡结果
       lookUpPunchRes() {
-        if (JSON.stringify(this.punchResList) !== '[]') {
+        if (JSON.stringify(this.punchResInfo) !== '{}') {
           uni.navigateTo({
-            url: '/pages/lookUpPunchRes/lookUpPunchRes?punchResList=' + encodeURIComponent(JSON.stringify(this.punchResList))
+            url: '/pages/lookUpPunchRes/lookUpPunchRes?punchResInfo=' + encodeURIComponent(JSON.stringify(this.punchResInfo))
           })
         }
       },
@@ -307,7 +307,7 @@
       },
       // 计算打卡结果
       calculatePunchResult() {
-        this.punchResList = []
+        this.punchResInfo = {}
         this.alreadyPunchCount = 0
         this.totalStaffCount = 0
         let date = new Date(this.selDate)
@@ -331,31 +331,31 @@
         }
         if (isInClockDate) {
           let res = this.calculateAlreadyPunchStaffCount()
-          if (JSON.stringify(res) !== '{}') {
+          if (res.punch) {
             // 所选择的日期在已打卡列表中
-            this.alreadyPunchCount = res.punchList.length
-            this.getPunchList(this.selectedCourse.staffList, res.punchList)
-          } else {
-            this.getPunchList(this.selectedCourse.staffList)
+            this.alreadyPunchCount = res.punch.punchList.length
           }
+          this.getPunchList(this.selectedCourse.staffList, res)
           this.totalStaffCount = this.selectedCourse.staffList.length
         }
-        console.log(this.alreadyPunchCount, this.totalStaffCount)
       },
       // 获取打卡结果
-      getPunchList(staffList, punchList = []) {
-        this.punchResList = staffList
-        for (let item of this.punchResList) {
+      getPunchList(staffList, punchInfo) {
+        this.punchResInfo.punchResList = staffList
+        this.punchResInfo.course_id = this.selectedCourse._id
+        this.punchResInfo.date = punchInfo.date
+        for (let item of this.punchResInfo.punchResList) {
           item.isPunch = false
         }
-        for (let item1 of punchList) {
-          for (let item2 of this.punchResList) {
-            if (item1.code === item2.code) {
-              item2.isPunch = true
+        if (punchInfo.punch) {
+          for (let item1 of punchInfo.punch.punchList) {
+            for (let item2 of this.punchResInfo.punchResList) {
+              if (item1.code === item2.code) {
+                item2.isPunch = true
+              }
             }
           }
         }
-        console.log('this.punchResList', this.punchResList)
       },
       // 返回某天已打卡信息
       calculateAlreadyPunchStaffCount() {
@@ -365,10 +365,13 @@
         let day = +this.selDate.split('-')[2]
         let dateStr = year + '.' + month + '.' + day
         let punchInfo = {}  // 某天的打卡信息
-        for (let item of this.selectedCourse.alreadyPunchStaffList) {
-          if (dateStr === item.date) {
-            punchInfo = item
-            break
+        punchInfo.date = dateStr
+        if (this.selectedCourse.alreadyPunchStaffList) {
+          for (let item of this.selectedCourse.alreadyPunchStaffList) {
+            if (dateStr === item.date) {
+              punchInfo.punch = item
+              break
+            }
           }
         }
         return punchInfo

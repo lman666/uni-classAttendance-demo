@@ -15,9 +15,13 @@
 }
 .punchResList .operate button {
   width: 100rpx;
-  height: 64rpx;
+  height: 66rpx;
   box-sizing: border-box;
-  line-height: 64rpx;
+  line-height: 66rpx;
   padding: 0;
+}
+.punchResList .operate button.chat {
+  background-color: #07C160;
+  color: #fff;
 }
 

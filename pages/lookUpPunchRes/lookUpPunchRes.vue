@@ -1,7 +1,7 @@
 <template>
   <view class="punchResList">
     <uni-list>
-      <block v-for="(item, i) in punchResList" :key="i">
+      <block v-for="(item, i) in punchResInfo.punchResList" :key="i">
         <uni-list-item>
         	<template v-slot:header>
         		<view class="stuInfo">
@@ -11,9 +11,9 @@
         	</template>
         	<template v-slot:footer>
         		<view class="operate">
-              <button v-if="item.isPunch === false" size="mini">打卡</button>
-              <button v-if="item.isPunch === true" size="mini">已打卡</button>
-              <button size="mini">聊天</button>
+              <button v-if="item.isPunch === false" size="mini" @click="punch(item.code, item.name, i)">打卡</button>
+              <button v-if="item.isPunch === true" size="mini" disabled>已打卡</button>
+              <button class="chat" size="mini" @click="chat(item.openid)">聊天</button>
             </view>
         	</template>
         </uni-list-item>
@@ -23,15 +23,53 @@
 </template>
 
 <script>
+  import {
+    mapState
+  } from 'vuex'
   export default {
     data() {
       return {
-        punchResList: []
+        punchResInfo: {}
       }
     },
+    computed: {
+      ...mapState('m_user', ['token'])
+    },
     onLoad(option) {
-      this.punchResList = JSON.parse(decodeURIComponent(option.punchResList))
-      console.log(this.punchResList)
+      this.punchResInfo = JSON.parse(decodeURIComponent(option.punchResInfo))
+      console.log(this.punchResInfo)
+    },
+    methods: {
+      async punch(code, name, i) {
+        let obj = {
+          course_id: this.punchResInfo.course_id,
+          code: code,
+          name: name,
+          date: this.punchResInfo.date
+        }
+        const clockHelper = uniCloud.importObject('clockHelper')
+        let res = await clockHelper.punchTheClock(this.token, obj)
+        if (res.code === 400) {
+          uni.$showMsg(res.message, 'none')
+        } else if (res.code === 403) {
+          uni.$showMsg(res.message, 'none')
+        } else {
+          this.punchResInfo.punchResList[i].isPunch = true
+        }
+      },
+      chat(openid) {
+        
+      },
+      // 点击返回键调用
+      bindClick() {
+        let pages = getCurrentPages()   // 获取当前页面栈的实例
+      	let prevPage = pages[pages.length - 2]   //上一页页面实例
+        prevPage.$vm.$children[0].getCourseInfo(this.token, this.punchResInfo.course_id)   // 调用上一页方法
+        uni.navigateBack()   // 返回上级页面
+      }
+    },
+    onUnload() {
+      this.bindClick()
     }
   }
 </script>
@@ -59,10 +97,15 @@
       
       button {
         width: 100rpx;
-        height: 64rpx;
+        height: 66rpx;
         box-sizing: border-box;
-        line-height: 64rpx;
+        line-height: 66rpx;
         padding: 0;
+        
+        &.chat {
+          background-color: #07C160;
+          color: #fff;
+        }
       }
     }
   }

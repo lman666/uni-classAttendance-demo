@@ -102,6 +102,10 @@ let fail2 = {
   code: 401,
   message: '人脸识别失败'
 }
+let fail3 = {
+  code: 403,
+  message: '该学生已打卡，不可重复打卡'
+}
 
 module.exports = {
   _before: function() { // 通用预处理器
@@ -128,6 +132,11 @@ module.exports = {
           punchList: true
         }).get()
         let list = punchRes.data[0].punchList
+        for (let item of list) {
+          if (item.code === stuObj.code) {
+            return fail3
+          }
+        }
         list.push(stuObj)
         let res2 = await db.collection('punchClock').where({
           course_id: obj.course_id,
