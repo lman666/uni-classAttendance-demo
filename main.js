@@ -1,6 +1,9 @@
 import App from './App'
 import store from './store/store.js'
 
+import Mixin from './polyfill/mixins'
+Vue.mixin(Mixin)
+
 // #ifndef VUE3
 import Vue from 'vue'
 

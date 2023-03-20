@@ -270,10 +270,29 @@
       ...mapState('m_user', ['userInfo', 'token', 'userData'])
     },
     created() {
+      uni.$on('isSDKReady', value => {
+        this.updateMyProfile()
+      });
       this.getCurrentDate()
       this.getCourseList(this.token)
     },
     methods: {
+      // 修改聊天个人信息
+      updateMyProfile() {
+        uni.$TUIKit
+          .updateMyProfile({
+            avatar: this.userInfo.avatar,
+            nick: this.userInfo.nickName
+          })
+          .then(imResponse => {
+            // 更新资料成功
+            console.log('update', imResponse.data);
+          })
+          .catch((imError) => {
+            // 更新资料失败
+            console.warn('updateMyProfile error:', imError);
+          });
+      },
       // 得到当天日期
       getCurrentDate() {
         let date = new Date()

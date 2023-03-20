@@ -57,8 +57,12 @@
           this.punchResInfo.punchResList[i].isPunch = true
         }
       },
+      // 聊天
       chat(openid) {
-        
+        let id = 'lin'
+        uni.navigateTo({
+          url: `/pages/TUI-Chat/chat?conversationID=C2C${id}`
+        })
       },
       // 点击返回键调用
       bindClick() {
