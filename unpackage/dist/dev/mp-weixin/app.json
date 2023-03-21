@@ -11,14 +11,7 @@
     "pages/TUI-Index/index",
     "pages/TUI-Conversation/conversation/conversation",
     "pages/TUI-Chat/chat",
-    "pages/TUI-Conversation/create-conversation/create",
-    "pages/TUI-User-Center/mine/mine",
-    "pages/TUI-User-Center/about/about",
-    "pages/TUI-User-Center/personal/personal",
-    "pages/TUI-User-Center/cancel/cancel",
-    "pages/TUI-User-Center/webview/webview",
-    "pages/TUI-Group/create-group/create",
-    "pages/TUI-Group/join-group/join"
+    "pages/TUI-Conversation/create-conversation/create"
   ],
   "subPackages": [],
   "window": {
@@ -59,5 +52,6 @@
     "chooseLocation",
     "getLocation"
   ],
+  "lazyCodeLoading": "requiredComponents",
   "usingComponents": {}
 }

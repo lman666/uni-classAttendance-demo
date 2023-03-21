@@ -38,7 +38,10 @@
     },
     onLoad() {
       if (JSON.stringify(this.userInfo) === '{}' || this.token === '' || !this.verify()) {
-        uni.navigateTo({
+        // uni.navigateTo({
+        //   url: '/pages/index/index?callBy=attendance'
+        // })
+        uni.reLaunch({
           url: '/pages/index/index'
         })
       }
@@ -46,10 +49,11 @@
     onShow() {
       if (this.userData.role === 0) {
         this.showPart = 'teacher'
-      } else {
+        this.login(this.userInfo.openid)
+      } else if (this.userData.role === 1) {
         this.showPart = 'student'
+        this.login(this.userInfo.openid)
       }
-      this.login(this.userInfo.openid)
     },
     methods: {
       // 验证token是否正确

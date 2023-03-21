@@ -1,1 +1,0 @@
-<view class="info"><view class="key">{{item.key}}</view><view class="value">{{item.value}}</view></view>

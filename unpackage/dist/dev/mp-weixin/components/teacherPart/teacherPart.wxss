@@ -149,4 +149,10 @@
   width: 60rpx;
   height: 60rpx;
 }
+.noTeaData.data-v-835de820 {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 

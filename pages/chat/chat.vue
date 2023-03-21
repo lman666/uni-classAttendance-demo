@@ -1,13 +1,18 @@
 <template>
-  <view class="container-conversation">
-    <view class="scroll-box">
-      <view class="uni-list margintop-bar">
-        <view v-for="item in conversationList" :key="item.conversationID" @tap="handleRoute(item.conversationID)">
-          <uni-swipe-action-item :right-options="options" @click="deleteConversation(item.conversationID)" :auto-close="autoClose">
-            <TUI-conversation-item :data-type="item.type" :conversation="item"></TUI-conversation-item>
-          </uni-swipe-action-item>
+  <view class="body">
+    <view class="container-conversation" v-if="conversationList.length">
+      <view class="scroll-box">
+        <view class="uni-list margintop-bar">
+          <view v-for="item in conversationList" :key="item.conversationID" @tap="handleRoute(item.conversationID)">
+            <uni-swipe-action-item :right-options="options" @click="deleteConversation(item.conversationID)" :auto-close="autoClose">
+              <TUI-conversation-item :data-type="item.type" :conversation="item"></TUI-conversation-item>
+            </uni-swipe-action-item>
+          </view>
         </view>
       </view>
+    </view>
+    <view class="noData" v-else>
+      <image src="@/static/tab_icons/noMessage.png"/>
     </view>
   </view>
 </template>
@@ -57,18 +62,9 @@
       deleteConversation(conversationID) {
         console.log('删除会话')
         uni.$TUIKit.deleteConversation(conversationID);
-      	// uni.showModal({
-      	// 	content: '确认删除会话？',
-      	// 	success: res => {
-      	// 		if (res.confirm) {
-      	// 			uni.$TUIKit.deleteConversation(this.conversation.conversationID);
-      	// 			this.setData({
-      	// 				conversation: {},
-      	// 				xScale: 0
-      	// 			});
-      	// 		}
-      	// 	}
-      	// });
+        // this.$nextTick(() => {
+        //   this.getConversationList()
+        // })
       },
       handleRoute(id) {
         const url = `/pages/TUI-Chat/chat?conversationID=${id}`;

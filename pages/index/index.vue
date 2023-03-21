@@ -93,6 +93,7 @@
             }]
           }
         },
+        callBy: 'attendance'
       };
     },
 
@@ -100,7 +101,8 @@
       ...mapState('m_user', ['userData'])
     },
 
-    onLoad() {
+    onLoad(option) {
+      this.callBy = option.callBy
       if (JSON.stringify(this.userData) !== '{}') {
         this.formData.school = this.userData.school;
         this.formData.name = this.userData.name;
@@ -178,7 +180,22 @@
         const tokenHelper = uniCloud.importObject('tokenHelper')
         let token = await tokenHelper.getToken(this.userInfo.openid) // 获取token
         this.updateToken(token) // 存储token
-        uni.navigateBack() // 返回首页
+        this.jump()
+      },
+      // 跳转到对应页面
+      jump() {
+        uni.switchTab({
+          url: '/pages/attendance/attendance'
+        })
+        // if (this.callBy === 'attendance') {
+        //   uni.navigateBack() // 返回首页
+        // } else if (this.callBy === 'myPage') {
+        //   uni.switchTab({
+        //     url: '/pages/attendance/attendance'
+        //   })
+        // } else {
+        //   uni.$showMsg('跳转页面失败', 'none')
+        // }
       }
     }
   }

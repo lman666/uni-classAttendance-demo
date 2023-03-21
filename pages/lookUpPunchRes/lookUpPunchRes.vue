@@ -11,7 +11,7 @@
         	</template>
         	<template v-slot:footer>
         		<view class="operate">
-              <button v-if="item.isPunch === false" size="mini" @click="punch(item.code, item.name, i)">打卡</button>
+              <button v-if="item.isPunch === false" size="mini" @click="punch(item.code, item.name, i)">补卡</button>
               <button v-if="item.isPunch === true" size="mini" disabled>已打卡</button>
               <button class="chat" size="mini" @click="chat(item.openid)">聊天</button>
             </view>
@@ -59,10 +59,23 @@
       },
       // 聊天
       chat(openid) {
-        let id = 'lin'
-        uni.navigateTo({
-          url: `/pages/TUI-Chat/chat?conversationID=C2C${id}`
-        })
+        uni.$TUIKit
+        	.getUserProfile({
+        		userIDList: ['lin']
+        	})
+        	.then(imRes => {
+        		if (imRes.data.length > 0) {
+        			let id = 'lin'
+        			uni.navigateTo({
+        			  url: `/pages/TUI-Chat/chat?conversationID=C2C${id}`
+        			})
+        		} else {
+        			uni.showToast({
+        				title: '用户不存在，可能未注册',
+        				icon: 'error'
+        			})
+        		}
+        	})
       },
       // 点击返回键调用
       bindClick() {

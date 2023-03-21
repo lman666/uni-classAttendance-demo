@@ -60,7 +60,8 @@
                 "desc" : "获取您的位置"
             }
         },
-        "requiredPrivateInfos" : [ "chooseLocation", "getLocation" ]
+        "requiredPrivateInfos" : [ "chooseLocation", "getLocation" ],
+        "lazyCodeLoading" : "requiredComponents"
     },
     "mp-alipay" : {
         "usingComponents" : true

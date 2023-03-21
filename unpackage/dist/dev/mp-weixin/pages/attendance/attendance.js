@@ -100,10 +100,10 @@ var components
 try {
   components = {
     teacherPart: function () {
-      return __webpack_require__.e(/*! import() | components/teacherPart/teacherPart */ "components/teacherPart/teacherPart").then(__webpack_require__.bind(null, /*! @/components/teacherPart/teacherPart.vue */ 209))
+      return __webpack_require__.e(/*! import() | components/teacherPart/teacherPart */ "components/teacherPart/teacherPart").then(__webpack_require__.bind(null, /*! @/components/teacherPart/teacherPart.vue */ 155))
     },
     studentPart: function () {
-      return Promise.all(/*! import() | components/studentPart/studentPart */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/studentPart/studentPart")]).then(__webpack_require__.bind(null, /*! @/components/studentPart/studentPart.vue */ 216))
+      return Promise.all(/*! import() | components/studentPart/studentPart */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/studentPart/studentPart")]).then(__webpack_require__.bind(null, /*! @/components/studentPart/studentPart.vue */ 162))
     },
   }
 } catch (e) {
@@ -178,12 +178,12 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var teacherPart = function teacherPart() {
   __webpack_require__.e(/*! require.ensure | components/teacherPart/teacherPart */ "components/teacherPart/teacherPart").then((function () {
-    return resolve(__webpack_require__(/*! @/components/teacherPart/teacherPart.vue */ 209));
+    return resolve(__webpack_require__(/*! @/components/teacherPart/teacherPart.vue */ 155));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var studentPart = function studentPart() {
   Promise.all(/*! require.ensure | components/studentPart/studentPart */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/studentPart/studentPart")]).then((function () {
-    return resolve(__webpack_require__(/*! @/components/studentPart/studentPart.vue */ 216));
+    return resolve(__webpack_require__(/*! @/components/studentPart/studentPart.vue */ 162));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _require = __webpack_require__(/*! ../../utils/token.js */ 64),
@@ -202,7 +202,10 @@ var _default = {
   },
   onLoad: function onLoad() {
     if (JSON.stringify(this.userInfo) === '{}' || this.token === '' || !this.verify()) {
-      uni.navigateTo({
+      // uni.navigateTo({
+      //   url: '/pages/index/index?callBy=attendance'
+      // })
+      uni.reLaunch({
         url: '/pages/index/index'
       });
     }
@@ -210,10 +213,11 @@ var _default = {
   onShow: function onShow() {
     if (this.userData.role === 0) {
       this.showPart = 'teacher';
-    } else {
+      this.login(this.userInfo.openid);
+    } else if (this.userData.role === 1) {
       this.showPart = 'student';
+      this.login(this.userInfo.openid);
     }
-    this.login(this.userInfo.openid);
   },
   methods: {
     // 验证token是否正确

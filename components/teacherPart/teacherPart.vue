@@ -165,8 +165,8 @@
         </view>
       </uni-drawer>
     </view>
-    <view class="noTeaData" v-if="showPage && JSON.stringify(courseList) === '[]'">
-      <image src="../../static/tab_icons/noData.png" @load="autoImage" :style="{width:imageWidth, height:imageHeight}">
+    <view class="noTeaData" v-if="showPage && JSON.stringify(courseList) === '[]'" :style="{width:viewWidth, height:viewHeight}">
+      <image src="../../static/tab_icons/noData.png" @load="autoView" >
       </image>
     </view>
   </view>
@@ -259,8 +259,8 @@
             backgroundColor: '#007aff'
           }
         }],
-        imageWidth: '', // 缺省图片宽度
-        imageHeight: '' // 缺省图片高度
+        viewWidth: '', // 缺省部分宽度
+        viewHeight: '' // 缺省部分高度
       }
     },
     options: {
@@ -395,16 +395,12 @@
         }
         return punchInfo
       },
-      // 让缺省图片铺满屏幕
-      autoImage(e) {
-        let imageOriginalWidth = e.detail.width
-        let imageOriginalHeight = e.detail.height
-        let imageWidth = 0
-        let imageHeight = 0
+      // 设置缺省部分宽高
+      autoView(e) {
         uni.getSystemInfo({
           complete: (res) => {
-            this.imageWidth = res.windowWidth + 'px'
-            this.imageHeight = res.windowHeight + 'px'
+            this.viewWidth = res.windowWidth + 'px'
+            this.viewHeight = res.windowHeight - 42.5 + 'px'
           }
         })
       },
@@ -1005,5 +1001,12 @@
       width: 60rpx;
       height: 60rpx;
     }
+  }
+  
+  .noTeaData {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>

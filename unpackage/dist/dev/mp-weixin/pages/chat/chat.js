@@ -102,7 +102,7 @@ var components
 try {
   components = {
     uniSwipeActionItem: function () {
-      return Promise.all(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 350))
+      return Promise.all(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 169))
     },
   }
 } catch (e) {
@@ -126,6 +126,15 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var g0 = _vm.conversationList.length
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        g0: g0,
+      },
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -182,14 +191,19 @@ var _logger = _interopRequireDefault(__webpack_require__(/*! @/utils/logger.js *
 //
 //
 //
+//
+//
+//
+//
+//
 var TUIConversationItem = function TUIConversationItem() {
   Promise.all(/*! require.ensure | components/tui-conversation/conversation-item/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tui-conversation/conversation-item/index")]).then((function () {
-    return resolve(__webpack_require__(/*! @/components/tui-conversation/conversation-item/index.vue */ 283));
+    return resolve(__webpack_require__(/*! @/components/tui-conversation/conversation-item/index.vue */ 181));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var TUIMessageList = function TUIMessageList() {
   __webpack_require__.e(/*! require.ensure | components/tui-chat/message-list/index */ "components/tui-chat/message-list/index").then((function () {
-    return resolve(__webpack_require__(/*! @/components/tui-chat/message-list/index.vue */ 291));
+    return resolve(__webpack_require__(/*! @/components/tui-chat/message-list/index.vue */ 189));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -227,18 +241,9 @@ var _default = {
     deleteConversation: function deleteConversation(conversationID) {
       console.log('删除会话');
       uni.$TUIKit.deleteConversation(conversationID);
-      // uni.showModal({
-      // 	content: '确认删除会话？',
-      // 	success: res => {
-      // 		if (res.confirm) {
-      // 			uni.$TUIKit.deleteConversation(this.conversation.conversationID);
-      // 			this.setData({
-      // 				conversation: {},
-      // 				xScale: 0
-      // 			});
-      // 		}
-      // 	}
-      // });
+      // this.$nextTick(() => {
+      //   this.getConversationList()
+      // })
     },
     handleRoute: function handleRoute(id) {
       var url = "/pages/TUI-Chat/chat?conversationID=".concat(id);

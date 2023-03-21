@@ -1,24 +1,81 @@
-page,
-.my-userinfo {
-  height: 100%;
-  background-color: #f4f4f4;
-}
-page .top-box,
-.my-userinfo .top-box {
-  margin-top: 50rpx;
-  height: 400rpx;
-  background-color: antiquewhite;
+.my-userinfo.data-v-0be17cc6 {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  height: 100%;
+  position: relative;
 }
-page .top-box .avatar,
-.my-userinfo .top-box .avatar {
+.my-userinfo .top-box.data-v-0be17cc6 {
+  width: 100%;
+  height: 400rpx;
+  background-color: #ffd2d3;
+  display: flex;
+  align-items: center;
+}
+.my-userinfo .top-box .avatar.data-v-0be17cc6 {
   margin-bottom: 20rpx;
-  height: 90px;
-  width: 90px;
+  height: 70px;
+  width: 70px;
   border-radius: 50%;
-  background-color: skyblue;
+  margin-left: 100rpx;
+}
+.my-userinfo .top-box .nickname.data-v-0be17cc6 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 20rpx;
+  color: #fff;
+  height: 90rpx;
+}
+.my-userinfo .top-box .nickname .nick.data-v-0be17cc6 {
+  font-size: 36rpx;
+}
+.my-userinfo .top-box .nickname .type.data-v-0be17cc6 {
+  font-size: 24rpx;
+}
+.my-userinfo .info.data-v-0be17cc6,
+.my-userinfo .more.data-v-0be17cc6 {
+  overflow: hidden;
+  width: 680rpx;
+  background-color: #fff;
+  border: 1rpx solid #ccc;
+  border-radius: 20rpx;
+  box-shadow: #ccc 0 0 5rpx 2rpx;
+  color: #6a6a6a;
+}
+.my-userinfo .info.data-v-0be17cc6 .uni-list-item .uni-list-item__container,
+.my-userinfo .more.data-v-0be17cc6 .uni-list-item .uni-list-item__container {
+  align-items: center;
+}
+.my-userinfo .info.data-v-0be17cc6 .uni-list-item .uni-list-item__container .icon image,
+.my-userinfo .more.data-v-0be17cc6 .uni-list-item .uni-list-item__container .icon image {
+  vertical-align: middle;
+  width: 40rpx;
+  height: 40rpx;
+}
+.my-userinfo .info.data-v-0be17cc6 .uni-list-item .uni-list-item__container .title,
+.my-userinfo .more.data-v-0be17cc6 .uni-list-item .uni-list-item__container .title {
+  font-size: 30rpx;
+  margin-left: 25rpx;
+}
+.my-userinfo .info.data-v-0be17cc6 {
+  position: absolute;
+  left: 50%;
+  top: 350rpx;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+.my-userinfo .info.data-v-0be17cc6 .uni-list-item .uni-list-item__container {
+  padding: 16rpx 30rpx;
+}
+.my-userinfo .info.data-v-0be17cc6 .uni-list-item .uni-list-item__container .detail {
+  flex: 1;
+  color: #c2c2c2;
+  font-size: 24rpx;
+  text-align: end;
+}
+.my-userinfo .more.data-v-0be17cc6 {
+  margin-top: 250rpx;
 }
 
