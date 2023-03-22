@@ -30,8 +30,19 @@
     </view>
     <view class="more">
       <uni-list>
+        <uni-list-item :border="false" showArrow clickable @click="handleClick(more[0].operate)"
+          v-if="userData.role === 1">
+          <template v-slot:header>
+            <view class="icon">
+              <image :src="more[0].icon"></image>
+            </view>
+          </template>
+          <template v-slot:body>
+            <text class="title">{{more[0].title}}</text>
+          </template>
+        </uni-list-item>
         <block v-for="(item, i) in more" :key="i">
-          <uni-list-item :border="false" showArrow clickable @click="handleClick(item.operate)">
+          <uni-list-item :border="false" showArrow clickable @click="handleClick(item.operate)" v-if="i >= 1">
             <template v-slot:header>
               <view class="icon">
                 <image :src="item.icon"></image>
@@ -50,6 +61,26 @@
           @confirm="logOut" @close="dialogClose"></uni-popup-dialog>
       </uni-popup>
     </view>
+    <view class="changePhotoDialog">
+     <uni-popup ref="changePhoto" background-color="#fff">
+        <view class="popup-content">
+          <view class="dialogTitle">
+            <text>更改照片</text>
+          </view>
+          <view class="dialogContent">
+            <uni-file-picker limit="1" v-model="photo"></uni-file-picker>
+          </view>
+          <view class="dialogButtonGroup">
+            <view class="dialogButton" @click="cancelChange">
+              <text class="cancel">取消</text>
+            </view>
+            <view class="dialogButton borderLeft" @click="confirmChange">
+              <text class="confirm">确定</text>
+            </view>
+          </view>
+        </view>
+      </uni-popup>
+    </view>
   </view>
 </template>
 
@@ -58,6 +89,10 @@
   import {
     mapState
   } from 'vuex'
+  import {
+    pathToBase64
+  } from 'image-tools'
+  
   export default {
     data() {
       return {
@@ -80,7 +115,7 @@
         more: [{
             icon: require('@/static/tab_icons/photo.png'),
             title: '更换照片',
-            operate: 'changePhoto'
+            operate: 'openChangePhotoDialog'
           },
           {
             icon: require('@/static/tab_icons/about.png'),
@@ -92,7 +127,9 @@
             title: '退出登录',
             operate: 'dialogToggle'
           }
-        ]
+        ],
+        photo: [],   // 图片数组
+        stuBase64Photo: ''    // base64格式的图片
       };
     },
     computed: {
@@ -110,8 +147,37 @@
         this[operate]()
       },
       // 更换图片
+      openChangePhotoDialog() {
+        this.$refs.changePhoto.open('center')
+      },
+      // 更换图片对话框取消
+      cancelChange() {
+        this.$refs.changePhoto.close()
+      },
+      // 更换图片对话框确定
+      confirmChange() {
+        if (this.photo.length) {
+          this.imageToBase64(this.photo[0].path)
+          this.$refs.changePhoto.close()
+        } else {
+          uni.$showMsg('请选择照片', 'none')
+        }
+      },
+      // 本地图片转base64
+      imageToBase64(path) {
+        pathToBase64(path)
+        .then(base64 => {
+          this.stuBase64Photo = base64
+          console.log(this.stuBase64Photo)
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      },
+      // 更新照片
       changePhoto() {
-        console.log('changePhoto')
+        // const register = uniCloud.importObject('register')
+        // let regisRes = await register.changePhoto(data)
       },
       // 关于我们
       aboutUs() {
@@ -129,13 +195,13 @@
       logOut() {
         logger.log('| TUI-User-Center | mine  | quit-logout ')
         uni.$TUIKit.logout().then(() => {
-        	uni.clearStorage()
-        	uni.reLaunch({
-        		url: '../index/index',
-        		success: () => {
-        			uni.$showMsg('退出成功', 'none')
-        		}
-        	});
+          uni.clearStorage()
+          uni.reLaunch({
+            url: '../index/index',
+            success: () => {
+              uni.$showMsg('退出成功', 'none')
+            }
+          });
         });
       }
     }
@@ -238,6 +304,74 @@
 
     .more {
       margin-top: 250rpx;
+    }
+
+    .changePhotoDialog {
+      uni-popup {
+        /deep/ .uni-popup.center uni-transition:nth-of-type(2) .vue-ref .uni-popup__wrapper.center{
+          border-radius: 22rpx;
+        }
+      }
+      
+      .popup-content {
+        width: 600rpx;
+        border-radius: 22rpx;
+        background-color: #fff;
+
+        .dialogTitle {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          padding-top: 20px;
+          color: #909399;
+          font-size: 16px;
+          font-weight: 500;
+        }
+
+        .dialogContent {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+          
+          /deep/ .uni-file-picker .uni-file-picker__container {
+            justify-content: center;
+          }
+        }
+
+        .dialogButtonGroup {
+          display: flex;
+          flex-direction: row;
+          border-top-color: #f5f5f5;
+          border-top-style: solid;
+          border-top-width: 1px;
+
+          .dialogButton {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            height: 45px;
+            font-size: 16px;
+
+            .cancel {
+              color: #333;
+            }
+
+            .confirm {
+              color: #007aff;
+            }
+          }
+
+          .borderLeft {
+            border-left-color: #f0f0f0;
+            border-left-style: solid;
+            border-left-width: 1px;
+          }
+        }
+      }
     }
   }
 </style>

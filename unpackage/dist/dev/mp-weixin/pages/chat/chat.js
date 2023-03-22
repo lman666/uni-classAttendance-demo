@@ -102,7 +102,7 @@ var components
 try {
   components = {
     uniSwipeActionItem: function () {
-      return Promise.all(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 169))
+      return Promise.all(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 172))
     },
   }
 } catch (e) {
@@ -198,12 +198,12 @@ var _logger = _interopRequireDefault(__webpack_require__(/*! @/utils/logger.js *
 //
 var TUIConversationItem = function TUIConversationItem() {
   Promise.all(/*! require.ensure | components/tui-conversation/conversation-item/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/tui-conversation/conversation-item/index")]).then((function () {
-    return resolve(__webpack_require__(/*! @/components/tui-conversation/conversation-item/index.vue */ 181));
+    return resolve(__webpack_require__(/*! @/components/tui-conversation/conversation-item/index.vue */ 184));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var TUIMessageList = function TUIMessageList() {
   __webpack_require__.e(/*! require.ensure | components/tui-chat/message-list/index */ "components/tui-chat/message-list/index").then((function () {
-    return resolve(__webpack_require__(/*! @/components/tui-chat/message-list/index.vue */ 189));
+    return resolve(__webpack_require__(/*! @/components/tui-chat/message-list/index.vue */ 192));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {

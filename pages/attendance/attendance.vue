@@ -38,9 +38,6 @@
     },
     onLoad() {
       if (JSON.stringify(this.userInfo) === '{}' || this.token === '' || !this.verify()) {
-        // uni.navigateTo({
-        //   url: '/pages/index/index?callBy=attendance'
-        // })
         uni.reLaunch({
           url: '/pages/index/index'
         })

@@ -176,26 +176,23 @@
           stuBase64Photo: this.formData.stuBase64Photo
         };
         const register = uniCloud.importObject('register')
-        await register.reg(data)  // 存储数据
-        const tokenHelper = uniCloud.importObject('tokenHelper')
-        let token = await tokenHelper.getToken(this.userInfo.openid) // 获取token
-        this.updateToken(token) // 存储token
-        this.jump()
+        let regisRes = await register.reg(data)  // 存储数据
+        console.log(regisRes)
+        if (regisRes.code === 200) {
+          const tokenHelper = uniCloud.importObject('tokenHelper')
+          let token = await tokenHelper.getToken(this.userInfo.openid) // 获取token
+          this.updateToken(token) // 存储token
+          this.jump()
+        } else {
+          uni.clearStorage()
+          uni.$showMsg(regisRes.message, 'none')
+        }
       },
       // 跳转到对应页面
       jump() {
         uni.switchTab({
           url: '/pages/attendance/attendance'
         })
-        // if (this.callBy === 'attendance') {
-        //   uni.navigateBack() // 返回首页
-        // } else if (this.callBy === 'myPage') {
-        //   uni.switchTab({
-        //     url: '/pages/attendance/attendance'
-        //   })
-        // } else {
-        //   uni.$showMsg('跳转页面失败', 'none')
-        // }
       }
     }
   }
