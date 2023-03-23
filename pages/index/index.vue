@@ -203,13 +203,15 @@
   .container {
     width: 100%;
     height: 100%;
-    background-color: #47bfff;
+    background-color: #ffd2d3;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
     .title {
       line-height: 300rpx;
+      font-size: 38rpx;
+      color: #fff;
       text-align: center;
       height: 300rpx;
     }

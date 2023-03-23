@@ -133,7 +133,7 @@
       };
     },
     computed: {
-      ...mapState('m_user', ['userInfo', 'userData'])
+      ...mapState('m_user', ['userInfo', 'userData', 'token'])
     },
     created() {
       this.infoListItems[0].detail = this.userData.school
@@ -168,16 +168,21 @@
         pathToBase64(path)
         .then(base64 => {
           this.stuBase64Photo = base64
-          console.log(this.stuBase64Photo)
+          this.changePhoto()
           })
           .catch(error => {
             console.error(error)
           })
       },
       // 更新照片
-      changePhoto() {
-        // const register = uniCloud.importObject('register')
-        // let regisRes = await register.changePhoto(data)
+      async changePhoto() {
+        const register = uniCloud.importObject('register')
+        let updatePhotoRes = await register.changePhoto(this.token, this.stuBase64Photo)
+        if (updatePhotoRes.code === 401) {
+          uni.$showMsg(updatePhotoRes.message, 'error')
+        } else {
+          uni.$showMsg(updatePhotoRes.message, 'success')
+        }
       },
       // 关于我们
       aboutUs() {

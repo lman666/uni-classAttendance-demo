@@ -200,13 +200,15 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
+/* WEBPACK VAR INJECTION */(function(uni, uniCloud) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 30));
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
 var _logger = _interopRequireDefault(__webpack_require__(/*! @/utils/logger.js */ 46));
 var _vuex = __webpack_require__(/*! vuex */ 55);
@@ -248,7 +250,7 @@ var _default = {
     };
   },
 
-  computed: _objectSpread({}, (0, _vuex.mapState)('m_user', ['userInfo', 'userData'])),
+  computed: _objectSpread({}, (0, _vuex.mapState)('m_user', ['userInfo', 'userData', 'token'])),
   created: function created() {
     this.infoListItems[0].detail = this.userData.school;
     this.infoListItems[1].title = this.userData.role === 0 ? '工号' : '学号';
@@ -282,15 +284,37 @@ var _default = {
       var _this = this;
       (0, _imageTools.pathToBase64)(path).then(function (base64) {
         _this.stuBase64Photo = base64;
-        console.log(_this.stuBase64Photo);
+        _this.changePhoto();
       }).catch(function (error) {
         console.error(error);
       });
     },
     // 更新照片
     changePhoto: function changePhoto() {
-      // const register = uniCloud.importObject('register')
-      // let regisRes = await register.changePhoto(data)
+      var _this2 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var register, updatePhotoRes;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                register = uniCloud.importObject('register');
+                _context.next = 3;
+                return register.changePhoto(_this2.token, _this2.stuBase64Photo);
+              case 3:
+                updatePhotoRes = _context.sent;
+                if (updatePhotoRes.code === 401) {
+                  uni.$showMsg(updatePhotoRes.message, 'error');
+                } else {
+                  uni.$showMsg(updatePhotoRes.message, 'success');
+                }
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
     // 关于我们
     aboutUs: function aboutUs() {
@@ -320,7 +344,7 @@ var _default = {
   }
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
 
 /***/ })
 

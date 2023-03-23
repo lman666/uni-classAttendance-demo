@@ -5,7 +5,7 @@
         <label class="uni-list-cell uni-list-cell-pd" v-for="item in items" :key="item.value">
           <view>{{item.name}}</view>
           <view>
-            <checkbox :value="item.value" :checked="item.checked" color="#ff8284" style="transform:scale(0.8)" />
+            <checkbox :value="item.value" :checked="item.checked" color="#ff9ba3" style="transform:scale(0.8)" />
           </view>
         </label>
       </checkbox-group>

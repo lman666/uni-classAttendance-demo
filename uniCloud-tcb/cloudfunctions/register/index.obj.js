@@ -39,6 +39,10 @@ let success1 = {
   code: 200,
   message: "成功"
 }
+let success2 = {
+  code: 201,
+  message: "照片已是最新"
+}
 
 const db = uniCloud.database()
 
@@ -94,9 +98,19 @@ module.exports = {
   },
   
   // 更改照片
-  changePhoto(token, stuBase64Photo) {
+  async changePhoto(token, stuBase64Photo) {
     if (token && verifyToken(token)) {
       let openid = decodeToken(token)
+      let updatePhotoRes = await db.collection('user').where({
+        openid: openid
+      }).update({
+        stuBase64Photo: stuBase64Photo
+      })
+      if (updatePhotoRes.updated === 0) {
+        return success2
+      } else {
+        return success1
+      }
     } else {
       return fail2
     }

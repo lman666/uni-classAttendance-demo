@@ -46,11 +46,11 @@
       },
       start_color: {
         type: String,
-        default: '#FF456B'
+        default: '#ffa3a8'
       },
       end_color: {
         type: String,
-        default: '#FF879F'
+        default: '#ffd7d9'
       },
     },
     watch: {

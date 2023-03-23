@@ -89,7 +89,8 @@
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
-    "selectedColor": "#f290bd",
+    "selectedColor": "#ffd2d3",
+    "color": "#707070",
     "list": [{
         "pagePath": "pages/attendance/attendance",
         "text": "考勤",
